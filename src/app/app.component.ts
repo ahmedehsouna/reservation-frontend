@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -11,22 +12,14 @@ export class AppComponent {
   expanded = true;
   open = false;
   protected switch = false;
-  protected readonly breadcrumbs = ['Home', 'Angular', 'Repositories', 'Taiga UI'];
 
 
-  protected readonly drawer = {
-    Components: [
-        {name: 'Button', icon: "ICON"},
-        {name: 'Input', icon: "ICON"},
-        {name: 'Tooltip', icon: "ICON"},
-    ],
-    Essentials: [
-        {name: 'Getting started', icon: "ICON"},
-        {name: 'Showcase', icon: "ICON"},
-        {name: 'Typography', icon: "ICON"},
-    ],
-};
+
   protected readonly routes: any = {};
+
+  constructor(public api:ApiService){
+
+  }
 
   
 }

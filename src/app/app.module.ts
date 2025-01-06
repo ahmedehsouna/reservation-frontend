@@ -1,5 +1,5 @@
 import { NG_EVENT_PLUGINS } from "@taiga-ui/event-plugins";
-import { TuiAppearance, TuiButton, TuiDataList, TuiDropdown, TuiDropdownService, TuiIcon, TuiLink, TuiRoot, TuiScrollbar, TuiTextfield, TuiTitle } from "@taiga-ui/core";
+import { TuiAppearance, TuiButton, TuiDataList, TuiDropdown, TuiDropdownService, TuiIcon, TuiLink, TuiOption, TuiRoot, TuiScrollbar, TuiTextfield, TuiTitle } from "@taiga-ui/core";
 import {
   TuiAvatar,
   TuiBadge,
@@ -27,11 +27,20 @@ import { FormsModule } from "@angular/forms";
 import { GuestsComponent } from './guests/guests.component';
 import { tuiAsPortal } from "@taiga-ui/cdk/classes";
 import { provideHttpClient } from "@angular/common/http";
+import { ModalComponent } from './modal/modal.component';
+import { CommonModule } from "@angular/common";
+import { HomeComponent } from './home/home.component';
+import { RoomsComponent } from './rooms/rooms.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GuestsComponent
+    GuestsComponent,
+    ModalComponent,
+    HomeComponent,
+    RoomsComponent,
+    ReservationsComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +69,11 @@ import { provideHttpClient } from "@angular/common/http";
       TuiNavigation,
       TuiScrollbar,
       TuiDataListWrapper,
-      TuiPagination
+      TuiPagination,
+      TuiOption,
+      CommonModule,
+      FormsModule,
+      TuiForm
 ],
   providers: [NG_EVENT_PLUGINS, TuiDropdownService, tuiAsPortal(TuiDropdownService), provideHttpClient()],
   bootstrap: [AppComponent]

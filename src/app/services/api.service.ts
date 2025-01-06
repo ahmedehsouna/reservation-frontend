@@ -1,40 +1,26 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, TemplateRef } from '@angular/core';
+import { GuestsService } from './guests.service';
 
-
-
-
-export interface Guest {
-  name:string;
-  email:string;
-  phone_number:string;
+export interface Pagination{
+  index:number;
+  length:number;
 }
 
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  constructor(public GuestsService: GuestsService) {}
 
 
-  constructor(private http:HttpClient) { }
-  // get_token = ()=> {
-  //   return localStorage.getItem("token")
-  // }
 
-  dev: string = "http://localhost:3000/api/";
-  base:string = this.dev
-  // token = this.get_token() || "";
-  get(route:string, query = "", params?:any) {
-    return this.http.get(this.base + route + query);
-  }
-  post(route:string, json:any) {
-    return this.http.post(this.base + route, json);
-  }
-  put(route:string, json:any) {
-      return this.http.put(this.base + route , json);
-  }
-  delete(route:string) {
-    return this.http.delete(this.base + route);
-  }
+  breadcrumbs:Array<string> = ['Home'];
+
+  close_modal = () => document.getElementById('modal_closer')?.click()
+  open_modal = () => document.getElementById('modal_opener')?.click()
+
+  modal_template: { template: TemplateRef<any> | null; header: string | null } =
+    { template: null, header: null };
 
 }

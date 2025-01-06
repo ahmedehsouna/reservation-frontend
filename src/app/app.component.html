@@ -1,10 +1,9 @@
 <!-- Ignore this part, it is only here to position drawer inside the example block -->
 <div class="custom-portal"><ng-container #viewContainer /></div>
 
-
-<div style="height: 100vh;display: flex;flex-direction: column;">
+<div style="height: 100vh; display: flex; flex-direction: column">
   <header tuiNavigationHeader>
-    <button
+    <!-- <button
         title="Menu"
         tuiIconButton
         tuiNavigationDrawer
@@ -41,45 +40,19 @@
                 </label>
             </tui-opt-group>
         </tui-data-list>
-    </button>
-    <span tuiNavigationLogo>
-        <tui-icon icon="@tui.home" />
-        <span tuiFade>A very very long product name</span>
-        <tui-badge>Test</tui-badge>
-    </span>
-    <button
-        appearance="secondary-grayscale"
-        tuiButton
-        tuiChevron
-        tuiDropdownOpen
-        type="button"
-        [tuiDropdown]="products"
+    </button> -->
+    <span
+      class="clickable"
+      routerLink=""
+      style="padding: 2px !important"
+      tuiNavigationLogo
     >
-        <span tuiFade>A very very long project</span>
-        <ng-template #products>
-            <tui-data-list size="s">
-                <button
-                    tuiOption
-                    type="button"
-                >
-                    A very very long project
-                    <tui-icon
-                        icon="@tui.check"
-                        [style.font-size.em]="1"
-                        [style.margin-left.rem]="0.5"
-                    />
-                </button>
-                <button
-                    tuiOption
-                    type="button"
-                >
-                    Something else
-                </button>
-            </tui-data-list>
-        </ng-template>
-    </button>
+      <tui-icon icon="@tui.home" />
+      <span tuiFade>Hotel Reservation System</span>
+    </span>
+
     <hr />
-    <button
+    <!-- <button
         appearance="secondary-grayscale"
         iconStart="@tui.plus"
         tuiButton
@@ -102,15 +75,12 @@
     >
         More
     </button>
-    <tui-avatar src="AI" />
+    <tui-avatar src="AI" /> -->
   </header>
-  
-  <div [style.display]="'flex'" style="flex: auto;">
-      <aside
-        style="z-index: 100;"
-          [tuiNavigationAside]="expanded"
-      >
-          <!-- <header>
+
+  <div [style.display]="'flex'" style="flex: auto">
+    <aside style="z-index: 100" [tuiNavigationAside]="expanded">
+      <!-- <header>
               <button
                   iconStart="@tui.home"
                   tuiAsideItem
@@ -119,114 +89,87 @@
                   <span tuiFade>A very very long product name</span>
               </button>
           </header> -->
-          <button
-              iconStart="@tui.calendar-check"
-              tuiAsideItem
-              type="button"
-          >
-              Reservations
-          </button>
-          <button
-              iconStart="@tui.users"
-              tuiAsideItem
-              [routerLink]="'guests'"
-          >
-              Guests
-          </button>
-          <button
-              automation-id="hint"
-              iconStart="@tui.lamp"
-              tuiAsideItem
-              type="button"
-          >
-            Rooms
-        </button>
-  
-          <footer>
-           
-              <button
-                  tuiAsideItem
-                  type="button"
-                  [iconStart]="expanded ? '@tui.chevron-left' : '@tui.chevron-right'"
-                  (click)="expanded = !expanded"
-              >
-                  {{ expanded ? 'Collapse' : 'Expand' }}
-              </button>
-          </footer>
-      </aside>
-      
-  
-      <div style="flex:auto">
-        <nav
-            style="padding: 5px 10px 0 10px;"
-            compact
-            tuiSubheader
-            [style.position]="'sticky'"
+
+      <!-- <div class="mt-4"></div> -->
+      <!-- <hr class=""> -->
+
+      <button
+        iconStart="@tui.calendar-check"
+        tuiAsideItem
+        type="button"
+        routerLink="reservations"
+      >
+        Reservations
+      </button>
+      <button iconStart="@tui.users" tuiAsideItem routerLink="guests">
+        Guests
+      </button>
+      <button
+        automation-id="hint"
+        iconStart="@tui.lamp"
+        tuiAsideItem
+        type="button"
+        routerLink="rooms"
+      >
+        Rooms
+      </button>
+
+      <footer>
+        <button
+          tuiAsideItem
+          type="button"
+          [iconStart]="expanded ? '@tui.chevron-left' : '@tui.chevron-right'"
+          (click)="expanded = !expanded"
         >
-            <tui-breadcrumbs [itemsLimit]="10">
-                <ng-container *ngFor="let item of breadcrumbs; let last = last">
-                    <ng-container *ngIf="last">
-                        <strong
-                            *tuiItem
-                            tuiFade
-                        >
-                            {{ item }}
-                        </strong>
-                    </ng-container>
-                    <ng-container *ngIf="!last">
-                        <button
-                            *tuiItem
-                            tuiLink
-                            type="button"
-                        >
-                            {{ item }}
-                        </button>
-                    </ng-container>
-                </ng-container>
-            </tui-breadcrumbs>
-            <tui-tabs tuiFade>
-                <button
-                    tuiTab
-                    type="button"
-                >
-                    Default view
-                </button>
-                <button
-                    tuiTab
-                    type="button"
-                >
-                    Details
-                </button>
-                <button
-                    tuiTab
-                    type="button"
-                >
-                    Followers
-                </button>
-            </tui-tabs>
-            <button
-                appearance="secondary"
+          {{ expanded ? "Collapse" : "Expand" }}
+        </button>
+      </footer>
+    </aside>
+
+    <div style="flex: auto">
+      <nav
+        style="padding: 5px 10px 0 10px"
+        compact
+        tuiSubheader
+        [style.position]="'sticky'"
+      >
+        <tui-breadcrumbs [itemsLimit]="10">
+          <ng-container *ngFor="let item of api.breadcrumbs; let last = last">
+            <ng-container *ngIf="last">
+              <strong *tuiItem tuiFade>
+                {{ item }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="!last">
+              <button
+                *tuiItem
+                appearance="outline"
                 tuiButton
                 type="button"
-            >
-                Secondary
-            </button>
-            <button
-                tuiButton
-                type="button"
-            >
-                Primary
-            </button>
-        </nav>
-     
+                style="border: 0 !important"
+                routerLink=""
+              >
+                {{ item }}
+              </button>
+            </ng-container>
+          </ng-container>
+        </tui-breadcrumbs>
+        <!-- <tui-tabs tuiFade>
+          <button tuiTab type="button">Default view</button>
+          <button tuiTab type="button">Details</button>
+          <button tuiTab type="button">Followers</button>
+        </tui-tabs>
+        <button appearance="secondary" tuiButton type="button">
+          Secondary
+        </button>
+        <button tuiButton type="button">Primary</button> -->
+      </nav>
 
-     
+      <router-outlet></router-outlet>
 
-        <router-outlet></router-outlet>
+      <button id="modal_opener" hidden data-modal-toggle="modal"></button>
 
-
+      <app-modal></app-modal>
     </div>
-  
   </div>
 </div>
-
