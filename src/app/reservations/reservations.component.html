@@ -1,1 +1,358 @@
-<p>reservations works!</p>
+<div class="p-6 bg-gray-700" style="height: 92vh">
+  <div
+    style="
+      background: white;
+      padding: 10px 50px;
+      border-radius: 15px;
+      height: 100%;
+    "
+  >
+    <div class="flex items-center p-4">
+      <h1 class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700">Reservations</h1>
+      <button
+        class="flex-none"
+        iconStart="@tui.plus"
+        tuiButton
+        size="m"
+        type="button"
+        appearance="secondary"
+        (click)="
+          selected_reservation = null;
+          api.modal_template = {
+            template: reservations_modal,
+            header: 'Add Reservation'
+          };
+          api.open_modal()
+        "
+      >
+        {{ "Add Reservation" }}
+      </button>
+    </div>
+
+    <div class="relative overflow-x-auto">
+      <div class="overflow-auto overflow-auto px-2" style="max-height: 70vh">
+        <table
+          class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+        >
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="px-6 py-3 text-center">#</th>
+              <th scope="col" class="px-6 py-3 text-center">Start</th>
+              <th scope="col" class="px-6 py-3 text-center">End</th>
+              <th scope="col" class="px-6 py-3 text-center">Guest</th>
+              <th scope="col" class="px-6 py-3 text-center">Rooms</th>
+              <th scope="col" class="px-6 py-3 text-center">actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let reservation of reservations; let i = index"
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
+              <th
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+                {{ i + 1 }}
+              </th>
+
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+                {{ reservation.start | date : "YYYY MMM d, h:mm a" }}
+              </th>
+              <td
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+                {{ reservation.end | date : "YYYY MMM d, h:mm a" }}
+              </td>
+
+              <td
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+                {{ reservation.guest.name || "-" }}
+              </td>
+
+              <td
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+                <ng-container
+                  *ngIf="reservation.rooms.length === 1; else rooms_dropdown"
+                >
+                  {{
+                    reservation.rooms[0].number +
+                      ". " +
+                      reservation.rooms[0].name || "-"
+                  }}
+                </ng-container>
+              </td>
+
+              <ng-template #rooms_dropdown>
+                <!-- [tuiObscuredEnabled]="rooms_open" -->
+
+
+                <button
+                tuiButton
+                tuiChevron
+                type="button"
+                size="s"
+                (click)="reservation.rooms_open? null :open_room(reservation)"
+                >
+                {{reservation.rooms.length}} Rooms
+            </button>
+
+                <div
+
+                  [ngClass]="{ hidden: !reservation.rooms_open }"
+                  id="dropdown"
+                  class="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownDefaultButton"
+                  >
+                    <li *ngFor="let room of reservation.rooms">
+                      <a
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >{{room.number + '. ' + room.name}}</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </ng-template>
+              
+
+              <td
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+                <button
+                  size="s"
+                  iconStart="@tui.pencil"
+                  tuiButton
+                  type="button"
+                  appearance="primary"
+                  class="mx-2"
+                  (click)="
+                    select_reservation(reservation);
+                    api.modal_template = {
+                      template: reservations_modal,
+                      header: 'Update Reservation'
+                    };
+                    api.open_modal()
+                  "
+                ></button>
+                <button
+                  (click)="
+                    select_reservation(reservation);
+                    api.modal_template = {
+                      template: delete_reservation_modal,
+                      header: 'Delete Reservation'
+                    };
+                    api.open_modal()
+                  "
+                  size="s"
+                  iconStart="@tui.trash"
+                  tuiButton
+                  type="button"
+                  appearance="accent"
+                ></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <tui-pagination
+        (indexChange)="getReservations($event + 1)"
+        class="p-4"
+        *ngIf="pagination"
+        [index]="pagination.index"
+        [length]="pagination.length"
+      />
+      <!--  -->
+    </div>
+  </div>
+</div>
+
+<ng-template #delete_reservation_modal>
+  <div class="p-6 space-y-6">
+    <p class="text-gray-400" *ngIf="selected_reservation">
+      Are sure you want to delete the reservation:
+      {{ selected_reservation.name }}
+    </p>
+  </div>
+
+  <div
+    class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
+  >
+    <button
+      (click)="remove()"
+      [disabled]="saving"
+      type="button"
+      tuiButton
+      size="m"
+      appearance="accent"
+    >
+      <!-- class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" -->
+      Delete
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #reservations_modal>
+  <div class="p-6 space-y-6">
+    <form
+      #reservations_form="ngForm"
+      (ngSubmit)="
+        selected_reservation
+          ? update(reservations_form)
+          : api.RequestHandler({
+      request:api.ReservationsService.store(reservations_form),
+      refresher:refresher$,
+      form:reservations_form,
+      modal:true,
+      }) 
+      "
+      class="mx-auto"
+    >
+      <input
+        *ngIf="selected_reservation"
+        type="hidden"
+        name="id"
+        [ngModel]="selected_reservation.id"
+      />
+
+      <div class="grid md:grid-cols-2 md:gap-6">
+        <div class="relative w-full mb-5 group">
+          <label style="color: white">Start date</label>
+          <div
+            class="mt-2"
+            style="height: 55px; overflow: hidden; border-radius: 11px"
+          >
+            <tui-root tuiTheme="dark">
+              <tui-input-date-time
+                timeMode="HH:MM AA"
+                tuiTheme="dark"
+                name="start"
+                [min]="today"
+                [(ngModel)]="start"
+                >Choose date and time</tui-input-date-time
+              >
+            </tui-root>
+          </div>
+        </div>
+
+        <div class="relative w-full mb-5 group">
+          <label style="color: white">End date</label>
+          <div
+            class="mt-2"
+            style="height: 55px; overflow: hidden; border-radius: 11px"
+          >
+            <tui-root tuiTheme="dark">
+              <tui-input-date-time
+                timeMode="HH:MM AA"
+                tuiTheme="dark"
+                [min]="start?.[0]"
+                name="end"
+                [(ngModel)]="end"
+                >Choose date and time</tui-input-date-time
+              >
+            </tui-root>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 md:gap-6">
+        <div class="relative w-full mb-5 group">
+          <label style="color: white">Guest</label>
+
+          <tui-combo-box
+            tuiTheme="dark"
+            tuiDropdownMobile
+            [tuiTextfieldCleaner]="true"
+            [stringify]="guest_stringify"
+            name="guest"
+            [(ngModel)]="selected_guest"
+          >
+            Guest
+            <tui-data-list-wrapper
+              *tuiDataList
+              [itemContent]="guest_template"
+              [items]="guests"
+            />
+          </tui-combo-box>
+        </div>
+        <div class="relative w-full mb-5 group">
+          <!-- [tuiTextfieldLabelOutside]="true" -->
+          <!-- [tuiTextfieldLabelOutside]="true" -->
+          <label style="color: white">Rooms</label>
+
+          <tui-multi-select
+            tuiTheme="dark"
+            [stringify]="room_stringify"
+            name="rooms"
+            tuiDropdownMobile
+            class="tui-space_vertical-4"
+            [tuiDropdownOpen]="open()"
+            [tuiTextfieldCleaner]="true"
+            [(ngModel)]="selected_rooms"
+            (tuiDropdownOpenChange)="open.set($event)"
+          >
+            Pick rooms
+            <ng-container *tuiDataList>
+              <tui-data-list-wrapper
+                tuiMultiSelectGroup
+                [itemContent]="room_template"
+                [items]="rooms"
+              />
+              <button
+                appearance="accent"
+                size="m"
+                tuiButton
+                tuiDropdownButton
+                type="button"
+                (click)="open.set(false)"
+              >
+                Done
+              </button>
+            </ng-container>
+          </tui-multi-select>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div
+    class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
+  >
+    <button
+      (click)="reservations_form.ngSubmit.emit()"
+      [disabled]="saving"
+      type="button"
+      tuiButton
+      appearance="primary"
+      size="m"
+    >
+      <!-- class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" -->
+      {{ selected_reservation ? "update" : "Add" }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #room_template let-room>
+  <span tuiCell>
+    <span tuiTitle>
+      {{ room.number + ". " + room.name }}
+    </span>
+  </span>
+</ng-template>
+
+<ng-template #guest_template let-guest>
+  <span tuiCell>
+    <span tuiTitle>
+      {{ guest.name }}
+    </span>
+  </span>
+</ng-template>

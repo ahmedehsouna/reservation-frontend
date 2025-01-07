@@ -3,7 +3,7 @@
     style="background: white; padding: 10px 50px; border-radius: 15px; height: 100%"
   >
     <div class="flex items-center p-4">
-      <h1 class="flex-auto text-lg h-fit p-4">Guests</h1>
+      <h1 class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700">Guests</h1>
       <button
         class="flex-none"
         iconStart="@tui.plus"
@@ -145,7 +145,12 @@
 
 <ng-template #guests_modal>
   <div class="p-6 space-y-6">
-    <form #guests_form="ngForm" (ngSubmit)="selected_guest? update(guests_form) : store(guests_form)" class="mx-auto">
+    <form #guests_form="ngForm" (ngSubmit)="selected_guest? api.RequestHandler({
+      request:api.GuestsService.update(guests_form),
+      refresher:refresher$,
+      form:guests_form,
+      modal:true,
+      }) : store(guests_form)" class="mx-auto">
 
       <input *ngIf="selected_guest" type="hidden" name="id" [ngModel]="selected_guest.id">
       <div class="relative z-0 w-full mb-5 group">
@@ -163,6 +168,11 @@
           class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >Full name</label
         >
+
+        <small class="text-red-500" *ngIf="api.errors_object['name']">{{api.errors_object['name']}}</small>
+
+
+
       </div>
       <div class="grid md:grid-cols-2 md:gap-6">
         <div class="relative z-0 w-full mb-5 group">
@@ -180,6 +190,9 @@
             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >Email address</label
           >
+
+          <small class="text-red-500" *ngIf="api.errors_object['email']">{{api.errors_object['email']}}</small>
+
         </div>
 
         <div class="relative z-0 w-full mb-5 group">
@@ -198,6 +211,10 @@
             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >Phone number (123-456-7890)</label
           >
+
+          <small class="text-red-500" *ngIf="api.errors_object['phone_number']">{{api.errors_object['phone_number']}}</small>
+
+
         </div>
       </div>
     </form>

@@ -1,5 +1,19 @@
-import { NG_EVENT_PLUGINS } from "@taiga-ui/event-plugins";
-import { TuiAppearance, TuiButton, TuiDataList, TuiDropdown, TuiDropdownService, TuiIcon, TuiLink, TuiOption, TuiRoot, TuiScrollbar, TuiTextfield, TuiTitle } from "@taiga-ui/core";
+import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
+import {
+  TuiAppearance,
+  TuiButton,
+  TuiDataList,
+  TuiDropdown,
+  TuiDropdownService,
+  TuiIcon,
+  TuiLink,
+  TuiOption,
+  TuiRoot,
+  TuiScrollbar,
+  TuiTextfield,
+  TuiTitle,
+  tuiDateFormatProvider,
+} from '@taiga-ui/core';
 import {
   TuiAvatar,
   TuiBadge,
@@ -14,24 +28,29 @@ import {
   TuiTabs,
 } from '@taiga-ui/kit';
 
-import {TuiCardLarge, TuiForm, TuiHeader, TuiNavigation} from '@taiga-ui/layout';
+import {
+  TuiCardLarge,
+  TuiForm,
+  TuiHeader,
+  TuiNavigation,
+} from '@taiga-ui/layout';
 
-
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GuestsComponent } from './guests/guests.component';
-import { tuiAsPortal } from "@taiga-ui/cdk/classes";
-import { provideHttpClient } from "@angular/common/http";
+import { tuiAsPortal } from '@taiga-ui/cdk/classes';
+import { provideHttpClient } from '@angular/common/http';
 import { ModalComponent } from './modal/modal.component';
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { ReservationsComponent } from './reservations/reservations.component';
+import { TuiComboBoxModule, TuiInputDateTimeModule, TuiMultiSelectModule } from '@taiga-ui/legacy';
 
 @NgModule({
   declarations: [
@@ -40,42 +59,55 @@ import { ReservationsComponent } from './reservations/reservations.component';
     ModalComponent,
     HomeComponent,
     RoomsComponent,
-    ReservationsComponent
+    ReservationsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-      BrowserAnimationsModule,
-      TuiRoot,
-      TuiButton,
-      TuiAppearance,
-      TuiDataList,
-      TuiDropdown,
-      TuiIcon,
-      TuiLink,
-      TuiTextfield,
-      TuiTitle,
-      TuiAvatar,
-      TuiBadge,
-      TuiBadgeNotification,
-      TuiBreadcrumbs,
-      TuiChevron,
-      TuiDataListDropdownManager,
-      TuiFade,
-      TuiSwitch,
-      TuiTabs,
-      FormsModule,
-      TuiCardLarge, TuiForm, TuiHeader, 
-      TuiNavigation,
-      TuiScrollbar,
-      TuiDataListWrapper,
-      TuiPagination,
-      TuiOption,
-      CommonModule,
-      FormsModule,
-      TuiForm
-],
-  providers: [NG_EVENT_PLUGINS, TuiDropdownService, tuiAsPortal(TuiDropdownService), provideHttpClient()],
-  bootstrap: [AppComponent]
+    BrowserAnimationsModule,
+    TuiRoot,
+    TuiButton,
+    TuiAppearance,
+    TuiDataList,
+    TuiDropdown,
+    TuiIcon,
+    TuiLink,
+    TuiTextfield,
+    TuiTitle,
+    TuiAvatar,
+    TuiBadge,
+    TuiBadgeNotification,
+    TuiBreadcrumbs,
+    TuiChevron,
+    TuiDataListDropdownManager,
+    TuiFade,
+    TuiSwitch,
+    TuiTabs,
+    FormsModule,
+    TuiCardLarge,
+    TuiForm,
+    TuiHeader,
+    TuiNavigation,
+    TuiScrollbar,
+    TuiDataListWrapper,
+    TuiPagination,
+    TuiOption,
+    CommonModule,
+    FormsModule,
+    TuiForm,
+    ReactiveFormsModule,
+    TuiInputDateTimeModule,
+    TuiComboBoxModule,
+    TuiMultiSelectModule,
+    DatePipe
+  ],
+  providers: [
+    NG_EVENT_PLUGINS,
+    TuiDropdownService,
+    tuiAsPortal(TuiDropdownService),
+    provideHttpClient(),
+    tuiDateFormatProvider({ mode: 'YMD', separator: '-' }),
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

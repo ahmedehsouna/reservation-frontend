@@ -1,1 +1,202 @@
-<p>rooms works!</p>
+<div class="p-6 bg-gray-700" style="height: 92vh">
+    <div
+      style="background: white; padding: 10px 50px; border-radius: 15px; height: 100%"
+    >
+      <div class="flex items-center p-4">
+        <h1 class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700">Rooms</h1>
+        <button
+          class="flex-none"
+          iconStart="@tui.plus"
+          tuiButton
+          size="m"
+          type="button"
+          appearance="secondary"
+          (click)="
+            selected_room = null;
+            api.modal_template = { template: rooms_modal, header: 'Add Room' };
+            api.open_modal()
+          "
+        >
+          {{ "Add Room" }}
+        </button>
+      </div>
+  
+      <div class="relative overflow-x-auto">
+        <div class="overflow-auto overflow-auto px-2" style="max-height: 70vh;">
+          <table
+            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+          >
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
+              <tr>
+                <th scope="col" class="px-6 py-3 text-center">#</th>
+                <th scope="col" class="px-6 py-3 text-center">Number</th>
+                <th scope="col" class="px-6 py-3 text-center">Name</th>
+                <th scope="col" class="px-6 py-3 text-center">actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let room of rooms; let i = index"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <th
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+                >
+                  {{ i + 1 }}
+                </th>
+    
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+                >
+                  {{ room.number }}
+                </th>
+                <td
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+                >
+                  {{ room.name }}
+                </td>
+            
+                <td
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+              >
+    
+              <button
+              size="s"
+              iconStart="@tui.pencil"
+              tuiButton
+              type="button"
+              appearance="primary"
+              class="mx-2"
+              (click)="
+              select_room(room);
+              api.modal_template = { template: rooms_modal, header: 'Update Room' };
+              api.open_modal()
+            "
+          >
+              </button>
+          <button
+    
+          (click)="
+          select_room(room);
+          api.modal_template = { template: delete_room_modal, header: 'Delete Room' };
+          api.open_modal()
+        "
+    
+          size="s"
+          iconStart="@tui.trash"
+          tuiButton
+          type="button"
+          appearance="accent"
+      >
+              
+          </button>
+    
+              </td>
+    
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <tui-pagination
+          (indexChange)="getRooms($event + 1)"
+          class="p-4"
+          *ngIf="pagination"
+          [index]="pagination.index"
+          [length]="pagination.length"
+        />
+        <!--  -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <ng-template #delete_room_modal>
+    <div class="p-6 space-y-6">
+      <p class="text-gray-400" *ngIf="selected_room">Are sure you want to delete the room: {{selected_room.name}}</p>
+    </div>
+  
+    <div
+      class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
+    >
+      <button
+        (click)="remove()"
+        [disabled]="saving"
+        type="button"
+        tuiButton
+        size="m"
+        appearance="accent"
+        >
+        <!-- class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" -->
+        Delete
+      </button>
+    </div>
+  
+  </ng-template>
+  
+  <ng-template #rooms_modal>
+    <div class="p-6 space-y-6">
+      <form #rooms_form="ngForm" (ngSubmit)="selected_room? update(rooms_form) : store(rooms_form)" class="mx-auto">
+  
+        <input *ngIf="selected_room" type="hidden" name="id" [ngModel]="selected_room.id">
+        <div class="grid md:grid-cols-2 md:gap-6">
+
+            <div class="relative z-0 w-full mb-5 group">
+                <input
+                  [ngModel]="selected_room?.number"
+                  type="text"
+                  name="number"
+                  id="number"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="number"
+                  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >Number</label
+                >
+              </div>
+
+
+        <div class="relative z-0 w-full mb-5 group">
+          <input
+            [ngModel]="selected_room?.name"
+            type="text"
+            name="name"
+            id="name"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+          />
+          <label
+            for="name"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Name</label
+          >
+        </div>
+        </div>
+      </form>
+    </div>
+  
+    <div
+      class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
+    >
+      <button
+        (click)="rooms_form.ngSubmit.emit()"
+        [disabled]="saving"
+        type="button"
+        tuiButton
+        appearance="primary"
+        size="m"
+  
+        >
+        <!-- class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" -->
+        {{selected_room? 'update': 'Add'}}
+      </button>
+    </div>
+  </ng-template>
+  

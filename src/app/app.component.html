@@ -2,7 +2,7 @@
 <div class="custom-portal"><ng-container #viewContainer /></div>
 
 <div style="height: 100vh; display: flex; flex-direction: column">
-  <header tuiNavigationHeader>
+  <header class="flex justify-center" tuiNavigationHeader>
     <!-- <button
         title="Menu"
         tuiIconButton
@@ -47,11 +47,10 @@
       style="padding: 2px !important"
       tuiNavigationLogo
     >
-      <tui-icon icon="@tui.home" />
       <span tuiFade>Hotel Reservation System</span>
     </span>
 
-    <hr />
+    <!-- <hr /> -->
     <!-- <button
         appearance="secondary-grayscale"
         iconStart="@tui.plus"
@@ -92,6 +91,17 @@
 
       <!-- <div class="mt-4"></div> -->
       <!-- <hr class=""> -->
+
+
+      <button
+      iconStart="@tui.home"
+      tuiAsideItem
+      type="button"
+      routerLink=""
+      [routerLinkActiveOptions]="{exact:true}"
+    >
+      Home
+    </button>
 
       <button
         iconStart="@tui.calendar-check"
@@ -141,12 +151,11 @@
               </strong>
             </ng-container>
             <ng-container *ngIf="!last">
+              <!-- tuiButton -->
               <button
                 *tuiItem
-                appearance="outline"
-                tuiButton
                 type="button"
-                style="border: 0 !important"
+                style="color:#526ed3!important"
                 routerLink=""
               >
                 {{ item }}

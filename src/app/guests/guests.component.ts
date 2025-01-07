@@ -14,7 +14,6 @@ import { Subject } from 'rxjs';
 export class GuestsComponent implements OnInit {
   constructor(public api: ApiService) {}
   guests:Guest[] = [];
-
   selected_guest:any = null;
   pagination:Pagination | null = null;
   saving:boolean = false;
@@ -77,7 +76,6 @@ export class GuestsComponent implements OnInit {
 
     this.refresher$.subscribe( _ => {
       this.getGuests()
-      this.api.close_modal()
       this.saving = false;
     })
 

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService, Pagination } from '../services/api.service';
+import { NgForm } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { Room } from '../services/rooms.service';
 
 @Component({
   selector: 'app-rooms',
@@ -9,11 +12,75 @@ import { ApiService } from '../services/api.service';
   styleUrl: './rooms.component.scss'
 })
 export class RoomsComponent implements OnInit {
+  constructor(public api: ApiService) {}
+  rooms:Room[] = [];
 
-  constructor(private api:ApiService){}
+  selected_room:any = null;
+  pagination:Pagination | null = null;
+  saving:boolean = false;
+  protected index = 4;
+  protected length = 10;
+  protected size = 10;
+  protected readonly items = [10, 50, 100];
 
-  ngOnInit(): void {
-    this.api.breadcrumbs[1] = 'Rooms'
+  refresher$:Subject<null> = new Subject();
+
+
+  select_room(room:Room){
+    this.selected_room = null;
+    setTimeout(() => {
+      this.selected_room = JSON.parse(JSON.stringify(room))
+    }, 10)
+  }
+  
+
+  store(form:NgForm){
+    this.saving = true
+    this.api.RoomsService.store(form).subscribe( res => {
+      this.refresher$.next(null)
+      form.reset();
+    })
   }
 
+  update(form:NgForm){
+    this.saving = true
+    this.api.RoomsService.update(form).subscribe( res => {
+      this.refresher$.next(null)
+      form.reset();
+    })
+  }
+
+  remove(){
+    this.saving = true
+    this.api.RoomsService.remove(this.selected_room.id).subscribe( res => {
+      this.refresher$.next(null)
+    })
+  }
+
+
+  getRooms(page = 1){
+    console.log(page)
+    this.api.RoomsService.index(page).subscribe((res:any) => {
+      this.rooms = res.data
+      this.pagination = res.pagination
+    });
+  }
+  
+
+  ngOnInit(): void {
+
+    console.log(this.api.modal_template)
+
+    this.api.breadcrumbs[1] = 'Rooms'
+
+    this.getRooms()
+
+    this.refresher$.subscribe( _ => {
+      this.getRooms()
+      this.api.close_modal()
+      this.saving = false;
+    })
+
+    
+  }
 }
