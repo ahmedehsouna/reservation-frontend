@@ -1,0 +1,122 @@
+<div *ngIf="room" class="p-6 bg-gray-700" style="height: 92vh">
+    <div
+      style="background: white; padding: 10px 50px; border-radius: 15px; height: 100%"
+    >
+      <div class="flex items-center p-4">
+        <h1 class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700">Room: <span class="text-gray-500 mx-3">{{room.number + '. ' + room.name}}</span></h1>
+
+     
+        
+      </div>
+
+
+
+
+<div class="py-4">
+    <h1 class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700">Upcoming reservations</h1>
+
+</div>
+
+
+<div class="relative overflow-x-auto">
+    <div class="overflow-auto overflow-auto px-2" style="max-height: 70vh">
+      <table
+        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+      >
+        <thead
+          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        >
+          <tr>
+            <th scope="col" class="px-6 py-3 text-center">#</th>
+            <th scope="col" class="px-6 py-3 text-center">Start</th>
+            <th scope="col" class="px-6 py-3 text-center">End</th>
+            <th scope="col" class="px-6 py-3 text-center">Guest</th>
+            <th scope="col" class="px-6 py-3 text-center"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let reservation of reservations; let i = index"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          >
+            <th
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+            >
+              {{ i + 1 }}
+            </th>
+
+            <th
+              scope="row"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+            >
+              {{ reservation.start | date : "YYYY MMM d, h:mm a" }}
+            </th>
+            <td
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+            >
+              {{ reservation.end | date : "YYYY MMM d, h:mm a" }}
+            </td>
+
+            <td
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+          >
+            {{ reservation.guest.name }}
+          </td>
+
+          
+
+            
+
+            <td
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+          >
+          <span *ngIf="reservation.is_current" class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Current</span>
+
+          </td>
+
+            <ng-template #rooms_dropdown>
+              <!-- [tuiObscuredEnabled]="rooms_open" -->
+
+              <button
+                tuiButton
+                tuiChevron
+                type="button"
+                size="s"
+                (click)="
+                  reservation.rooms_open ? null : open_room(reservation)
+                "
+              >
+                {{ reservation.rooms.length }} Rooms
+              </button>
+
+              <div
+                [ngClass]="{ hidden: !reservation.rooms_open }"
+                id="dropdown"
+                class="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+              >
+                <ul
+                  class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownDefaultButton"
+                >
+                  <li *ngFor="let room of reservation.rooms">
+                    <a
+                      class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >{{ room.number + ". " + room.name }}</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  
+     
+    </div>
+  </div>
+  
+
+  

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { NgForm } from '@angular/forms';
+import { Reservation } from './reservations.service';
 
 export interface Room {
   name: string;
   number: number;
+  upcoming_reservations_count: number,
+  id:string
 }
 
 @Injectable({
@@ -12,8 +15,12 @@ export interface Room {
 })
 export class RoomsService extends HttpService {
 
-  index(page:number){
-    return super.get('rooms', {page})
+  index(page:number, sort_by:string = 'number', order:string = 'desc') {
+    return super.get('rooms', {page, sort_by, order})
+  }
+
+  show(id:any){
+    return super.get('rooms/' + id)
   }
 
   store(form:NgForm){

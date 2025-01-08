@@ -12,6 +12,7 @@ import {
   TuiOption,
   TuiRoot,
   TuiScrollbar,
+  TuiSelect,
   TuiTextfield,
   TuiTitle,
   tuiDateFormatProvider,
@@ -54,6 +55,8 @@ import { RoomsComponent } from './rooms/rooms.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { TuiComboBoxModule, TuiInputDateTimeModule, TuiMultiSelectModule } from '@taiga-ui/legacy';
 import { CalendarComponent } from './calendar/calendar.component';
+import { ShowComponent as ShowGuestComponent } from './guests/show/show.component';
+import { ShowComponent as ShowRoomComponent } from './rooms/show/show.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     RoomsComponent,
     ReservationsComponent,
     CalendarComponent,
+    ShowGuestComponent,
+    ShowRoomComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,7 +110,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     TuiMultiSelectModule,
     DatePipe,
     TuiCalendar,
-    TuiHintDirective
+    TuiHintDirective,
+    TuiSelect,
   ],
   providers: [
     NG_EVENT_PLUGINS,

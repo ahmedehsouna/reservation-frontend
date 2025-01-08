@@ -10,7 +10,8 @@ export interface Reservation {
   end: Date;
   rooms: Array<Room>,
   guest:Guest,
-  rooms_open?: boolean
+  rooms_open?: boolean,
+  is_current?: boolean
 }
 
 @Injectable({
@@ -39,6 +40,14 @@ export class ReservationsService extends HttpService {
 
   remove(id:number){
     return super.delete('reservations/' + id)
+  }
+
+  getGuestReservations(id:any){
+    return super.get(`guests/${id}/reservations`)
+  }
+
+  getRoomReservations(id:any){
+    return super.get(`rooms/${id}/reservations`)
   }
   
   reverseTaigaDate = (taiga_date:[string, TuiTime]) => `${taiga_date[0]}`.split('.').reverse().join('-') + ':' + taiga_date[1].hours + ":" + taiga_date[1].minutes

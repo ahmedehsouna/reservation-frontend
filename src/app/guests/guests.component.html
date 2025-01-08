@@ -40,7 +40,8 @@
           <tbody>
             <tr
               *ngFor="let guest of guests; let i = index"
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 clickable"
+              [routerLink]="guest.id"
             >
               <th
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
@@ -76,7 +77,7 @@
             type="button"
             appearance="primary"
             class="mx-2"
-            (click)="
+            (click)="$event.stopPropagation();
             select_guest(guest);
             api.modal_template = { template: guests_modal, header: 'Update Guest' };
             api.open_modal()
@@ -85,7 +86,7 @@
             </button>
         <button
   
-        (click)="
+        (click)="$event.stopPropagation();
         select_guest(guest);
         api.modal_template = { template: delete_guest_modal, header: 'Delete Guest' };
         api.open_modal()

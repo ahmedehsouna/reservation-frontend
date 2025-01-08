@@ -7,6 +7,8 @@ export interface Guest {
   name: string;
   email: string;
   phone_number: string;
+  id:string;
+  past_reservations_count?:number
 }
 
 @Injectable({
@@ -16,6 +18,10 @@ export class GuestsService extends HttpService {
 
   index(page:number){
     return super.get('guests', {page})
+  }
+
+  show(id:any){
+    return super.get('guests/' + id)
   }
 
   store(form:NgForm){

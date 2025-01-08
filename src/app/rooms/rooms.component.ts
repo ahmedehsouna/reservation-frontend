@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService, Pagination } from '../services/api.service';
-import { NgForm } from '@angular/forms';
+import { FormControl, NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Room } from '../services/rooms.service';
 
@@ -18,14 +18,12 @@ export class RoomsComponent implements OnInit {
   selected_room:any = null;
   pagination:Pagination | null = null;
   saving:boolean = false;
-  protected index = 4;
-  protected length = 10;
-  protected size = 10;
-  protected readonly items = [10, 50, 100];
 
   refresher$:Subject<null> = new Subject();
 
 
+  sort_by: 'number' | 'name' | 'upcoming_reservations_count' = 'number'
+  order: 'asc' | 'desc'  = 'desc'
   select_room(room:Room){
     this.selected_room = null;
     setTimeout(() => {
@@ -59,13 +57,15 @@ export class RoomsComponent implements OnInit {
 
 
   getRooms(page = 1){
-    console.log(page)
-    this.api.RoomsService.index(page).subscribe((res:any) => {
+
+    this.api.RoomsService.index(page, this.sort_by, this.order).subscribe((res:any) => {
       this.rooms = res.data
       this.pagination = res.pagination
     });
   }
   
+
+
 
   ngOnInit(): void {
 

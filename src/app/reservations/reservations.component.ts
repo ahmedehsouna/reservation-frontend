@@ -107,7 +107,7 @@ protected readonly end = [
     });
   }
   
-  selected_guest:Guest = {name:'', email:'', phone_number:'',}
+  selected_guest:Guest = {name:'', email:'', phone_number:'',id: ''}
   selected_rooms:Room[] = [];
 
 
