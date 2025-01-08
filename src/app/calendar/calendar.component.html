@@ -1,0 +1,59 @@
+<!-- <div class="flex justify-center items-center">
+    <button (click)="prevMonth()" class="p-2 border rounded-l-md">
+      &lt;
+    </button>
+    <span class="p-2">{{ monthNames[selectedMonth] }} {{ selectedYear }}</span>
+    <button (click)="nextMonth()" class="p-2 border rounded-r-md">
+      &gt;
+    </button>
+  </div> -->
+
+  
+
+  <div class="p-4 bg-white">
+      <div class="mt-4"></div>
+    
+      <tui-calendar
+      (monthChange)="onMonthChanged($event)"
+      
+      />
+    
+      <div *ngIf="daysInMonth" class="grid grid-cols-7 gap-1"> 
+        <div *ngFor="let day of daysInMonth" class="border p-2" style="height: 100px;">
+          <p>{{ day }}</p>
+          <ng-container *ngIf="day % 3">
+
+            <!-- <p class="text-sm"></p> -->
+  
+            <div class="w-full text-center">
+              <button
+                    tuiButton
+                    
+                    type="button"
+                    size="s"
+                    appearance="secondary"
+                    [tuiHint]="tooltip"
+                    tuiHintAppearance="dark"
+                    tuiHintDirection="right"
+                    >
+                    {{day}} rooms
+                    <!-- (click)="reservation.rooms_open? null :open_room(reservation)" -->
+                </button>
+            </div>
+
+          </ng-container>
+
+          <ng-template #tooltip>
+            <div>
+                What is
+                <strong>love</strong>
+                ?
+            </div>
+            <div>Baby don't hurt me</div>
+            <div>Don't hurt me</div>
+            <div>No more...</div>
+        </ng-template>
+
+        </div>
+      </div>
+  </div>

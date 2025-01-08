@@ -2,9 +2,11 @@ import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
 import {
   TuiAppearance,
   TuiButton,
+  TuiCalendar,
   TuiDataList,
   TuiDropdown,
   TuiDropdownService,
+  TuiHintDirective,
   TuiIcon,
   TuiLink,
   TuiOption,
@@ -51,6 +53,7 @@ import { HomeComponent } from './home/home.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { TuiComboBoxModule, TuiInputDateTimeModule, TuiMultiSelectModule } from '@taiga-ui/legacy';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,7 @@ import { TuiComboBoxModule, TuiInputDateTimeModule, TuiMultiSelectModule } from 
     HomeComponent,
     RoomsComponent,
     ReservationsComponent,
+    CalendarComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,7 +103,9 @@ import { TuiComboBoxModule, TuiInputDateTimeModule, TuiMultiSelectModule } from 
     TuiInputDateTimeModule,
     TuiComboBoxModule,
     TuiMultiSelectModule,
-    DatePipe
+    DatePipe,
+    TuiCalendar,
+    TuiHintDirective
   ],
   providers: [
     NG_EVENT_PLUGINS,

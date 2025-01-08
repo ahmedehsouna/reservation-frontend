@@ -64,6 +64,6 @@ export class ApiService {
   close_modal = () => document.getElementById('modal_closer')?.click();
   open_modal = () => document.getElementById('modal_opener')?.click();
 
-  modal_template: { template: TemplateRef<any> | null; header: string | null } =
+  modal_template: { template: TemplateRef<any> | null; header: string | null, width?:string } =
     { template: null, header: null };
 }

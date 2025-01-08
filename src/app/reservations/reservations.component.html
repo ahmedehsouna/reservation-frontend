@@ -8,12 +8,31 @@
     "
   >
     <div class="flex items-center p-4">
-      <h1 class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700">Reservations</h1>
+      <h1
+        class="flex-auto text-lg h-fit p-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-700"
+      >
+        Reservations
+      </h1>
+
+      <button
+        class="flex-none mx-2"
+        iconStart="@tui.calendar"
+        tuiButton
+        size="s"
+        type="button"
+        appearance="primary"
+        (click)="
+          api.modal_template = { template: calendar, header: 'Reservations', width:'1000px' };
+          api.open_modal()
+        "
+      >
+        View calendar
+      </button>
       <button
         class="flex-none"
         iconStart="@tui.plus"
         tuiButton
-        size="m"
+        size="s"
         type="button"
         appearance="secondary"
         (click)="
@@ -92,19 +111,19 @@
               <ng-template #rooms_dropdown>
                 <!-- [tuiObscuredEnabled]="rooms_open" -->
 
-
                 <button
-                tuiButton
-                tuiChevron
-                type="button"
-                size="s"
-                (click)="reservation.rooms_open? null :open_room(reservation)"
+                  tuiButton
+                  tuiChevron
+                  type="button"
+                  size="s"
+                  (click)="
+                    reservation.rooms_open ? null : open_room(reservation)
+                  "
                 >
-                {{reservation.rooms.length}} Rooms
-            </button>
+                  {{ reservation.rooms.length }} Rooms
+                </button>
 
                 <div
-
                   [ngClass]="{ hidden: !reservation.rooms_open }"
                   id="dropdown"
                   class="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
@@ -116,13 +135,12 @@
                     <li *ngFor="let room of reservation.rooms">
                       <a
                         class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >{{room.number + '. ' + room.name}}</a
+                        >{{ room.number + ". " + room.name }}</a
                       >
                     </li>
                   </ul>
                 </div>
               </ng-template>
-              
 
               <td
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
@@ -355,4 +373,8 @@
       {{ guest.name }}
     </span>
   </span>
+</ng-template>
+
+<ng-template #calendar>
+  <app-calendar></app-calendar>
 </ng-template>

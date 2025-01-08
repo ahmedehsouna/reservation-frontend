@@ -11,12 +11,19 @@ import { ApiService } from '../services/api.service';
 export class HomeComponent implements OnInit  {
 
 
-  constructor(private api:ApiService){}
+  constructor(public api:ApiService){}
 
   stats: any = {}
 
+ 
   routes: Array<string> = ['guests', 'reservations', 'rooms']
-  ngOnInit(): void {
+
+  
+   
+
+    // Create an array of days for the calendar
+    
+    ngOnInit(): void {
     this.api.breadcrumbs.length === 2 && this.api.breadcrumbs.pop() 
 
     this.api.HomeService.index().subscribe((res:any) => {

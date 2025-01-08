@@ -7,8 +7,13 @@
       height: 100%;
     "
   >
+
     <div class="flex justify-center">
-      <h2 class="p-4 text-3xl mb-2  font-bold tracking-tight text-gray-900 dark:text-gray-700">Hotel Reservation System</h2>
+      <h2
+        class="p-4 text-3xl mb-2 font-bold tracking-tight text-gray-900 dark:text-gray-700"
+      >
+        Hotel Reservation System
+      </h2>
     </div>
 
     <div class="flex justify-around mt-4">
@@ -17,21 +22,23 @@
         [routerLink]="route"
         class="block p-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
-
-      <div style="width: 210px;" 
-      class="block p-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-100 dark:border-gray-700 "
-
-      >
+        <div
+          style="width: 210px"
+          class="block p-6 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-100 dark:border-gray-700"
+        >
           <h5
             class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-700 text-center"
           >
-            {{route | titlecase}}
+            {{ route | titlecase }}
           </h5>
-          <p class="font-normal text-gray-700 dark:text-gray-400 text-xl text-center">{{stats[route]?.count}}</p>
-      </div>
-
-
+          <p
+            class="font-normal text-gray-700 dark:text-gray-400 text-xl text-center"
+          >
+            {{ stats[route]?.count }}
+          </p>
+        </div>
       </a>
     </div>
+
   </div>
 </div>

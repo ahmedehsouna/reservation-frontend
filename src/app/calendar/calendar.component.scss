@@ -1,0 +1,25 @@
+::ng-deep tui-calendar-sheet{
+    display: none!important;
+}
+
+
+::ng-deep tui-calendar{
+    display: contents!important;
+}
+
+::ng-deep tui-calendar tui-scrollbar{
+    display: contents!important;
+}
+
+::ng-deep tui-spin-button{
+    padding: 20px 5px;
+}
+
+::ng-deep tui-calendar-year{
+    height: 100px !important;
+    overflow: scroll!important;
+    width: 100%!important;
+    display: flex!important;
+    flex-wrap: wrap!important;
+    justify-content: center!important;
+}
