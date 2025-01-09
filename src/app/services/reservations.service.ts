@@ -49,6 +49,14 @@ export class ReservationsService extends HttpService {
   getRoomReservations(id:any){
     return super.get(`rooms/${id}/reservations`)
   }
+
+  countReservationsMonthly(start:any, end:any){
+    return super.get(`reservations/monthly`, {start,end})
+  }
+
+  getReservationsByDay(day:any){
+    return super.get(`reservations/by-day`, {day})
+  }
   
   reverseTaigaDate = (taiga_date:[string, TuiTime]) => `${taiga_date[0]}`.split('.').reverse().join('-') + ':' + taiga_date[1].hours + ":" + taiga_date[1].minutes
 

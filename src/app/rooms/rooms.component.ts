@@ -69,7 +69,6 @@ export class RoomsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.api.modal_template)
 
     this.api.breadcrumbs[1] = 'Rooms'
 

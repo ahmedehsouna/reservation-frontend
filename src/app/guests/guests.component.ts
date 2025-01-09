@@ -58,7 +58,6 @@ export class GuestsComponent implements OnInit {
 
 
   getGuests(page = 1){
-    console.log(page)
     this.api.GuestsService.index(page).subscribe((res:any) => {
       this.guests = res.data
       this.pagination = res.pagination
@@ -68,7 +67,6 @@ export class GuestsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.api.modal_template)
 
     this.api.breadcrumbs[1] = 'Guests'
 

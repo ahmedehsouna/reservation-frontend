@@ -100,7 +100,6 @@ protected readonly end = [
 
 
   getReservations(page = 1){
-    console.log(page)
     this.api.ReservationsService.index(page).subscribe((res:any) => {
       this.reservations = res.data
       this.pagination = res.pagination
@@ -130,7 +129,6 @@ protected readonly end = [
       this.rooms = res['data'];
     })
 
-    console.log(this.api.modal_template)
 
     this.api.breadcrumbs[1] = 'Reservations'
 
