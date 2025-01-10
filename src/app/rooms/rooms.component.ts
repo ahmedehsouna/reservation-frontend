@@ -32,29 +32,6 @@ export class RoomsComponent implements OnInit {
   }
   
 
-  store(form:NgForm){
-    this.saving = true
-    this.api.RoomsService.store(form).subscribe( res => {
-      this.refresher$.next(null)
-      form.reset();
-    })
-  }
-
-  update(form:NgForm){
-    this.saving = true
-    this.api.RoomsService.update(form).subscribe( res => {
-      this.refresher$.next(null)
-      form.reset();
-    })
-  }
-
-  remove(){
-    this.saving = true
-    this.api.RoomsService.remove(this.selected_room.id).subscribe( res => {
-      this.refresher$.next(null)
-    })
-  }
-
 
   getRooms(page = 1){
 
@@ -76,7 +53,6 @@ export class RoomsComponent implements OnInit {
 
     this.refresher$.subscribe( _ => {
       this.getRooms()
-      this.api.close_modal()
       this.saving = false;
     })
 

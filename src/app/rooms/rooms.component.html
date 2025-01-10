@@ -181,7 +181,11 @@
     class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
   >
     <button
-      (click)="remove()"
+      (click)="api.RequestHandler({
+        request: api.RoomsService.remove(selected_room.id),
+        refresher:refresher$,
+        modal:true,
+        })"
       [disabled]="saving"
       type="button"
       tuiButton
@@ -198,7 +202,12 @@
   <div class="p-6 space-y-6">
     <form
       #rooms_form="ngForm"
-      (ngSubmit)="selected_room ? update(rooms_form) : store(rooms_form)"
+      (ngSubmit)="api.RequestHandler({
+        request:selected_room? api.RoomsService.update(rooms_form): api.RoomsService.store(rooms_form),
+        refresher:refresher$,
+        form:rooms_form,
+        modal:true,
+        })"
       class="mx-auto"
     >
       <input
@@ -223,6 +232,10 @@
             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >Number</label
           >
+
+          <small class="text-red-500" *ngIf="api.errors_object['number']">{{api.errors_object['number']}}</small>
+
+
         </div>
 
         <div class="relative z-0 w-full mb-5 group">
@@ -240,6 +253,10 @@
             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >Name</label
           >
+
+          <small class="text-red-500" *ngIf="api.errors_object['name']">{{api.errors_object['name']}}</small>
+
+
         </div>
       </div>
     </form>

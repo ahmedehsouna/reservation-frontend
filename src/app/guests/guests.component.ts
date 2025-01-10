@@ -33,28 +33,9 @@ export class GuestsComponent implements OnInit {
   }
   
 
-  store(form:NgForm){
-    this.saving = true
-    this.api.GuestsService.store(form).subscribe( res => {
-      this.refresher$.next(null)
-      form.reset();
-    })
-  }
 
-  update(form:NgForm){
-    this.saving = true
-    this.api.GuestsService.update(form).subscribe( res => {
-      this.refresher$.next(null)
-      form.reset();
-    })
-  }
 
-  remove(){
-    this.saving = true
-    this.api.GuestsService.remove(this.selected_guest.id).subscribe( res => {
-      this.refresher$.next(null)
-    })
-  }
+ 
 
 
   getGuests(page = 1){

@@ -130,7 +130,11 @@
     class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
   >
     <button
-      (click)="remove()"
+      (click)="api.RequestHandler({
+        request:api.GuestsService.remove(selected_guest.id),
+        refresher:refresher$,
+        modal:true,
+        })"
       [disabled]="saving"
       type="button"
       tuiButton
@@ -146,12 +150,12 @@
 
 <ng-template #guests_modal>
   <div class="p-6 space-y-6">
-    <form #guests_form="ngForm" (ngSubmit)="selected_guest? api.RequestHandler({
-      request:api.GuestsService.update(guests_form),
+    <form #guests_form="ngForm" (ngSubmit)="api.RequestHandler({
+      request:selected_guest? api.GuestsService.update(guests_form): api.GuestsService.store(guests_form),
       refresher:refresher$,
       form:guests_form,
       modal:true,
-      }) : store(guests_form)" class="mx-auto">
+      })" class="mx-auto">
 
       <input *ngIf="selected_guest" type="hidden" name="id" [ngModel]="selected_guest.id">
       <div class="relative z-0 w-full mb-5 group">

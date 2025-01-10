@@ -19,6 +19,10 @@ export class RoomsService extends HttpService {
     return super.get('rooms', {page, sort_by, order})
   }
 
+  select(name:string){
+    return super.get('rooms/select', {name})
+  }
+
   show(id:any){
     return super.get('rooms/' + id)
   }

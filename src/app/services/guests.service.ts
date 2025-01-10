@@ -20,6 +20,10 @@ export class GuestsService extends HttpService {
     return super.get('guests', {page})
   }
 
+  select(name:string){
+    return super.get('guests/select', {name})
+  }
+
   show(id:any){
     return super.get('guests/' + id)
   }

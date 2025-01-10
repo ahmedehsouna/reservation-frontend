@@ -1,7 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, OnInit, signal } from '@angular/core';
 import { ApiService, Pagination } from '../services/api.service';
 import { FormControl, NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, debounceTime } from 'rxjs';
 import { Reservation } from '../services/reservations.service';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk/date-time';
 import { Guest } from '../services/guests.service';
@@ -23,6 +23,7 @@ interface User {
 })
 export class ReservationsComponent implements OnInit {
   constructor(public api: ApiService) {}
+
   reservations:Reservation[] = [];
 
   protected readonly open = signal(false);
@@ -35,6 +36,11 @@ export class ReservationsComponent implements OnInit {
 
   guests:Array<Guest> = []
   rooms:Array<Room> = [];
+
+  guest_name:string = ""
+  room_name:string = ""
+  onSearchGuest$:Subject<null> = new Subject();
+  onSearchRoom$:Subject<null> = new Subject();
 
   rooms_open:boolean = false;
 
@@ -51,17 +57,32 @@ export class ReservationsComponent implements OnInit {
 
   showDatepicker: boolean = false;
   datepickerValue: any = '';
-  protected readonly start:any = [
+  start:any = [
     TuiDay.currentLocal(),
     new TuiTime(0, 0),
 ];
 
 today = TuiDay.currentLocal()
 
-protected readonly end = [
+end = [
   TuiDay.currentLocal(),
   new TuiTime(0, 0),
 ];
+
+
+
+resetForm(){
+  this.start = [
+    TuiDay.currentLocal(),
+    new TuiTime(0, 0),
+];
+this.end = [
+  TuiDay.currentLocal(),
+  new TuiTime(0, 0),
+];
+this.selected_rooms = [] 
+this.selected_guest = {name:'', email:'', phone_number:'',id: ''}
+}
 
   refresher$:Subject<null> = new Subject();
 
@@ -70,26 +91,22 @@ protected readonly end = [
     this.selected_reservation = null;
     setTimeout(() => {
       this.selected_reservation = JSON.parse(JSON.stringify(reservation))
+
+      this.selected_rooms = this.rooms.filter(ele => this.selected_reservation['rooms'].find((one:any) =>one.id == ele.id) )
+      this.selected_guest = JSON.parse(JSON.stringify(this.selected_reservation['guest']))
+
+      this.start = [
+        TuiDay.fromLocalNativeDate(new Date(this.selected_reservation['start'])),
+        TuiTime.fromLocalNativeDate(new Date(this.selected_reservation['start'])),
+    ];
+    this.end = [
+      TuiDay.fromLocalNativeDate(new Date(this.selected_reservation['end'])),
+      TuiTime.fromLocalNativeDate(new Date(this.selected_reservation['end'])),
+    ];
+
     }, 10)
   }
   
-
-  store(form:NgForm){
-
-    this.saving = true
-    this.api.ReservationsService.store(form).subscribe( res => {
-      this.refresher$.next(null)
-      form.reset();
-    })
-  }
-
-  update(form:NgForm){
-    this.saving = true
-    this.api.ReservationsService.update(form).subscribe( res => {
-      this.refresher$.next(null)
-      form.reset();
-    })
-  }
 
   remove(){
     this.saving = true
@@ -110,7 +127,33 @@ protected readonly end = [
   selected_rooms:Room[] = [];
 
 
+  onSearchGuest(){
+    this.api.GuestsService.select(this.guest_name).subscribe((res:any) => {
+      this.guests = res['data'];
+    })
+  }
+
+  onSearchRoom(){
+    this.api.RoomsService.select(this.room_name).subscribe((res:any) => {
+      this.rooms = res['data'];
+    })
+  }
+
+
+  
+
   ngOnInit(): void {
+
+    this.onSearchGuest()
+    this.onSearchGuest$.pipe(debounceTime(500)).subscribe(_ => this.onSearchGuest())
+
+    this.onSearchRoom()
+    this.onSearchRoom$.pipe(debounceTime(500)).subscribe(_ => this.onSearchRoom())
+
+   
+    // this.onSearchGuest()
+
+    
 
 
     document.addEventListener('click', (event) => {
@@ -121,9 +164,8 @@ protected readonly end = [
       })
     });
 
-    this.api.GuestsService.index(1).subscribe((res:any) => {
-      this.guests = res['data'];
-    })
+
+    
 
     this.api.RoomsService.index(1).subscribe((res:any) => {
       this.rooms = res['data'];
@@ -136,7 +178,6 @@ protected readonly end = [
 
     this.refresher$.subscribe( _ => {
       this.getReservations()
-      this.api.close_modal()
       this.saving = false;
     })
 

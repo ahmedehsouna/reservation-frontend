@@ -24,7 +24,6 @@ export class ReservationsService extends HttpService {
   }
 
   store(form:NgForm){
-    console.log(form.form.value)
     let data = {
       start: this.reverseTaigaDate(form.form.value.start),
       end: this.reverseTaigaDate(form.form.value.end),
@@ -35,7 +34,13 @@ export class ReservationsService extends HttpService {
   }
 
   update(form:NgForm){
-    return super.put('reservations/' + form.form.value['id'], form.form.value)
+    let data = {
+      start: this.reverseTaigaDate(form.form.value.start),
+      end: this.reverseTaigaDate(form.form.value.end),
+      guest_id: form.form.value.guest?.id,
+      rooms_ids: form.form.value.rooms?.map((room:any) => room.id)
+    }
+    return super.put('reservations/' + form.form.value['id'], data)
   }
 
   remove(id:number){
@@ -58,7 +63,7 @@ export class ReservationsService extends HttpService {
     return super.get(`reservations/by-day`, {day})
   }
   
-  reverseTaigaDate = (taiga_date:[string, TuiTime]) => `${taiga_date[0]}`.split('.').reverse().join('-') + ':' + taiga_date[1].hours + ":" + taiga_date[1].minutes
-
+  reverseTaigaDate = (taiga_date:[string, TuiTime]) => `${taiga_date[0]}`.split('.').reverse().join('-') + ':' + taiga_date[1]?.hours + ":" + taiga_date[1]?.minutes
+  taigaDateParse = (date:any) => []
 
 }

@@ -22,7 +22,11 @@
         type="button"
         appearance="primary"
         (click)="
-          api.modal_template = { template: calendar, header: 'Reservations', width:'1000px' };
+          api.modal_template = {
+            template: calendar,
+            header: 'Reservations',
+            width: '1000px'
+          };
           api.open_modal()
         "
       >
@@ -41,7 +45,8 @@
             template: reservations_modal,
             header: 'Add Reservation'
           };
-          api.open_modal()
+          api.open_modal();
+          resetForm()
         "
       >
         {{ "Add Reservation" }}
@@ -206,7 +211,11 @@
     class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
   >
     <button
-      (click)="remove()"
+      (click)="api.RequestHandler({
+        request: api.ReservationsService.remove(selected_reservation.id),
+        refresher:refresher$,
+        modal:true,
+        })"
       [disabled]="saving"
       type="button"
       tuiButton
@@ -223,15 +232,12 @@
   <div class="p-6 space-y-6">
     <form
       #reservations_form="ngForm"
-      (ngSubmit)="
-        selected_reservation
-          ? update(reservations_form)
-          : api.RequestHandler({
-      request:api.ReservationsService.store(reservations_form),
-      refresher:refresher$,
-      form:reservations_form,
-      modal:true,
-      }) 
+      (ngSubmit)="api.RequestHandler({
+        request:selected_reservation? api.ReservationsService.update(reservations_form): api.ReservationsService.store(reservations_form),
+        refresher:refresher$,
+        form:reservations_form,
+        modal:true,
+        })
       "
       class="mx-auto"
     >
@@ -260,6 +266,9 @@
               >
             </tui-root>
           </div>
+          <small class="text-red-500" *ngIf="api.errors_object['start']">{{
+            api.errors_object["start"]
+          }}</small>
         </div>
 
         <div class="relative w-full mb-5 group">
@@ -279,6 +288,9 @@
               >
             </tui-root>
           </div>
+          <small class="text-red-500" *ngIf="api.errors_object['end']">{{
+            api.errors_object["end"]
+          }}</small>
         </div>
       </div>
 
@@ -294,6 +306,7 @@
             name="guest"
             [(ngModel)]="selected_guest"
           >
+            <input style="border: none!important;" [(ngModel)]="guest_name" [ngModelOptions]="{standalone:true}" (ngModelChange)="onSearchGuest$.next(null)" placeholder="Type a name" tuiTextfieldLegacy />
             Guest
             <tui-data-list-wrapper
               *tuiDataList
@@ -301,6 +314,9 @@
               [items]="guests"
             />
           </tui-combo-box>
+          <small class="text-red-500" *ngIf="api.errors_object['guest_id']">{{
+            api.errors_object["guest_id"]
+          }}</small>
         </div>
         <div class="relative w-full mb-5 group">
           <!-- [tuiTextfieldLabelOutside]="true" -->
@@ -318,6 +334,7 @@
             [(ngModel)]="selected_rooms"
             (tuiDropdownOpenChange)="open.set($event)"
           >
+
             Pick rooms
             <ng-container *tuiDataList>
               <tui-data-list-wrapper
@@ -337,6 +354,9 @@
               </button>
             </ng-container>
           </tui-multi-select>
+          <small class="text-red-500" *ngIf="api.errors_object['rooms_ids']">{{
+            api.errors_object["rooms_ids"]
+          }}</small>
         </div>
       </div>
     </form>
